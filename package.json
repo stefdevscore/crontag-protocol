@@ -1,0 +1,19 @@
+{
+  "name": "crontag-protocol",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Protocol-level contracts and specifications for crontag.",
+  "license": "MIT",
+  "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/stefdevscore/crontag-protocol.git"
+  },
+  "bugs": {
+    "url": "https://github.com/stefdevscore/crontag-protocol/issues"
+  },
+  "homepage": "https://github.com/stefdevscore/crontag-protocol#readme",
+  "scripts": {
+    "repo:tree": "bash scripts/repo-tree.sh"
+  }
+}
