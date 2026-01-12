@@ -56,13 +56,25 @@ The protocol makes limited promises — and keeps them.
 Protocol guarantees, constraints, and failure modes are defined in
 [`/docs`](./docs):
 
-- [Trust Model](./docs/trust-model.md)  
-- [Protocol Invariants](./docs/protocol-invariants.md)  
-- [Acceptable Failures](./docs/acceptable-failures.md)  
-- [Reference Flow](./docs/reference-flow.md)  
-- [Full Access Flow with Optional Controller](./docs/full-access-flow-with-controller.md)  
-- [Control & Trust FAQ](./docs/control-and-trust-faq.md)  
-- [Glossary](./docs/glossary.md)
+### Guarantees (Normative)
+
+- [Trust Model](./docs/guarantees/trust-model.md)  
+- [Protocol Invariants](./docs/guarantees/protocol-invariants.md)  
+- [Acceptable Failures](./docs/guarantees/acceptable-failures.md)  
+
+### Reference Flows
+
+- [Canonical Reference Flow](./docs/flows/reference-flow.md)  
+- [Full Access Flow with Optional Controller](./docs/flows/full-access-flow-with-controller.md)  
+
+### Governance & Control
+
+- [Control & Trust FAQ](./docs/governance/control-and-trust-faq.md)  
+
+### Shared References
+
+- [Glossary](./docs/glossary.md)  
+- [Versioning](./docs/VERSIONING.md)
 
 These documents are **normative** for **crontag protocol v1**.
 
@@ -72,4 +84,8 @@ These documents are **normative** for **crontag protocol v1**.
 
 This repository defines **crontag protocol v1**.
 
-Any change to protocol guarantees requires a new version.
+The protocol, contract, and repository versioning model is defined in
+[`docs/VERSIONING.md`](./docs/VERSIONING.md).
+
+Any change to protocol guarantees requires a new protocol version,
+which will be defined in a separate repository.

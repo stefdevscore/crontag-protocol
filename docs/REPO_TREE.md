@@ -1,27 +1,31 @@
 # Repository Tree
 
-Generated on: `Sun Jan 11 23:33:14 UTC 2026`
+Generated on: `Mon Jan 12 00:56:58 UTC 2026`
 
 ## Directory Tree (Depth 8)
 ```
 .
 |-- docs
+|   |-- flows
+|   |   |-- full-access-flow-with-controller.md
+|   |   `-- reference-flow.md
+|   |-- governance
+|   |   `-- control-and-trust-faq.md
+|   |-- guarantees
+|   |   |-- acceptable-failures.md
+|   |   |-- protocol-invariants.md
+|   |   `-- trust-model.md
 |   |-- README.md
 |   |-- REPO_TREE.md
-|   |-- acceptable-failures.md
-|   |-- control-and-trust-faq.md
-|   |-- full-access-flow-with-controller.md
-|   |-- glossary.md
-|   |-- protocol-invariants.md
-|   |-- reference-flow.md
-|   `-- trust-model.md
+|   |-- VERSIONING.md
+|   `-- glossary.md
 |-- scripts
 |   `-- repo-tree.sh
 |-- LICENSE.md
 |-- README.md
 `-- package.json
 
-3 directories, 13 files
+6 directories, 14 files
 ```
 
 ## Ignored Paths
