@@ -43,12 +43,14 @@ The version field in `package.json` reflects the **state of the repository**,
 not the protocol.
 
 Repository version numbers may change to reflect:
+
 - documentation updates
 - tooling additions
 - test coverage
 - deployment scripts
 
 They do **not** imply:
+
 - protocol evolution
 - backwards compatibility
 - upgrade safety

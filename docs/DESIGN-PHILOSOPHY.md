@@ -5,7 +5,7 @@ This document explains the design philosophy behind the crontag protocol.
 It is **not** a specification and does not define protocol guarantees.
 Those are defined in the Trust Model and other normative documents.
 
-This document exists to explain *why* the protocol is shaped the way it is,
+This document exists to explain _why_ the protocol is shaped the way it is,
 in human terms, without introducing new authority or requirements.
 
 ---
@@ -73,6 +73,7 @@ Immutability is not used because “blockchain is good”.
 It is used because **history matters when trust erodes**.
 
 When access facts are mutable:
+
 - disputes become unresolvable
 - power becomes deniable
 - users cannot prove what was true at the time
@@ -91,6 +92,7 @@ History does not.
 Legitimacy is a social concept.
 
 It depends on:
+
 - context
 - norms
 - institutions
@@ -98,6 +100,7 @@ It depends on:
 - law
 
 Encoding legitimacy at the protocol layer would require:
+
 - a definition of “legitimate”
 - an enforcement mechanism
 - a process for disputes
@@ -142,6 +145,7 @@ unimportant, but because enforcing them at this layer would compromise the
 protocol’s neutrality and longevity.
 
 Incentives are expected to exist:
+
 - in clients
 - in access points
 - in reputation systems
@@ -157,6 +161,7 @@ It does not attempt to replace them.
 Complex systems create hiding places.
 
 Every additional feature introduces:
+
 - more rules
 - more exceptions
 - more authority

@@ -9,29 +9,29 @@ The purpose of this flow is to demonstrate how **issuance provenance can be
 inferred from immutable on-chain facts**, and how **acceptance is enforced
 locally by an access point**, without introducing protocol-level authority.
 
-This document is explanatory and illustrative.  
+This document is explanatory and illustrative.
 It does not define protocol guarantees or prescribe enforcement policy.
 
 ---
 
 ## Actors
 
-- **contextOwner**  
+- **contextOwner**
   Configures optional minting constraints for a context.
 
-- **user**  
+- **user**
   Mints and holds an `AccessPass`.
 
-- **ContextController**  
+- **ContextController**
   Enforces minting constraints at issuance time only.
 
-- **AccessPass**  
+- **AccessPass**
   Records immutable access facts at mint time.
 
-- **AccessVerifier**  
+- **AccessVerifier**
   Evaluates minimal, objective validity of an `AccessPass`.
 
-- **access point**  
+- **access point**
   Enforces local acceptance policy using verifier output and immutable facts.
 
 ---
@@ -44,6 +44,7 @@ It does not define protocol guarantees or prescribe enforcement policy.
    to enforce minting constraints scoped to the `(contextOwner, contextId)` pair.
 
 3. A `user` initiates a mint transaction against `AccessPass`, specifying:
+
    - `contextId`
    - expiration time
    - tier

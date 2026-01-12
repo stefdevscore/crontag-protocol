@@ -3,7 +3,7 @@
 This glossary defines terms as they are used **within the crontag protocol** and
 its immediate interaction surface.
 
-Definitions are technical and normative.  
+Definitions are technical and normative.
 Common-language meanings may differ.
 
 ---
@@ -13,7 +13,7 @@ Common-language meanings may differ.
 A binary decision (`allow` or `deny`) made at an access point based on explicit,
 inspectable rules applied to an `AccessPass`.
 
-Access is not a right, entitlement, or promise.  
+Access is not a right, entitlement, or promise.
 It is an evaluation performed at a specific moment in time.
 
 ---
@@ -25,7 +25,7 @@ An immutable on-chain token representing a time-bound access claim.
 An `AccessPass` records factual data at mint time, including ownership, expiration,
 tier, transferability, a context identifier, and an optional controller reference.
 
-An `AccessPass` does not encode meaning, legitimacy, price, or interpretation.  
+An `AccessPass` does not encode meaning, legitimacy, price, or interpretation.
 It is a **fact record**, not an access policy.
 
 ---
@@ -36,6 +36,7 @@ Any application, service, venue, or system that evaluates access and enforces a
 local acceptance decision.
 
 An access point:
+
 - calls an `AccessVerifier`
 - may apply additional local policy
 - enforces the final access outcome
@@ -49,6 +50,7 @@ Access points are **not part of the protocol** and carry no protocol-level autho
 A stateless on-chain contract that evaluates whether access should be granted.
 
 An `AccessVerifier`:
+
 - reads immutable `AccessPass` data
 - applies explicit, published rules
 - returns a deterministic allow or deny result
@@ -64,6 +66,7 @@ The authority to decide which `AccessPass` tokens are honored by a specific
 access point.
 
 Acceptance control:
+
 - lives entirely at the access point
 - is absolute, local, and replaceable
 - is not granted or revoked by the protocol
@@ -77,6 +80,7 @@ Acceptance control reflects where power already exists in practice.
 A user-facing application that interacts with the crontag protocol.
 
 Clients may:
+
 - facilitate minting
 - display pass data
 - call verifiers
@@ -94,6 +98,7 @@ Human-readable or application-level meaning associated with an `AccessPass`.
 Context may include event details, membership descriptions, or UI metadata.
 
 Context:
+
 - does not decide access
 - is not required for correctness
 - may be stored off-chain
@@ -106,6 +111,7 @@ Context:
 An optional on-chain contract that enforces minting constraints.
 
 A `ContextController`:
+
 - is consulted **only at mint time**
 - scopes rules to `(contextOwner, contextId)`
 - has no authority after minting
@@ -120,6 +126,7 @@ Controllers affect **issuance only**, never access.
 An opaque identifier associated with an `AccessPass`.
 
 The protocol does **not** enforce:
+
 - global uniqueness
 - authenticity
 - ownership
@@ -135,6 +142,7 @@ The address authorized to configure minting rules for a specific
 `(contextOwner, contextId)` scope within a `ContextController`.
 
 Context ownership:
+
 - applies only to minting configuration
 - does not imply legitimacy
 - does not grant access authority
@@ -148,6 +156,7 @@ A timestamp recorded at mint time after which an `AccessPass` is considered inva
 by compliant verifiers.
 
 Expiration:
+
 - is enforced mechanically
 - cannot be extended or shortened
 - cannot be revoked
@@ -159,6 +168,7 @@ Expiration:
 An immutable piece of information recorded on-chain.
 
 In crontag, facts include:
+
 - ownership
 - expiration
 - tier
@@ -175,6 +185,7 @@ Facts are not interpretations and do not imply meaning or legitimacy.
 The act of minting an `AccessPass`.
 
 Issuance:
+
 - records immutable facts
 - may be constrained by a `ContextController`
 - cannot be undone or modified
@@ -186,11 +197,13 @@ Issuance authority does **not** imply access authority.
 ## Issuer (Context Creator)
 
 An actor who initiates issuance by:
+
 - selecting a `contextId`
 - optionally configuring a `ContextController`
 - enabling users to mint `AccessPass` tokens
 
 Issuers may:
+
 - set pricing externally
 - behave dishonestly
 - misrepresent context meaning
@@ -204,6 +217,7 @@ The protocol does not validate issuer legitimacy.
 The application of meaning or policy to factual data.
 
 In crontag, interpretation:
+
 - occurs outside the `AccessPass`
 - is implemented by verifiers and access points
 - is explicit, inspectable, and replaceable
@@ -225,6 +239,7 @@ Minting is a one-time event that permanently records all immutable pass data.
 The authority to determine how much users are charged for access.
 
 Pricing control:
+
 - does not live in the protocol
 - is not enforced by `AccessPass` or controllers
 - exists in issuers, clients, sale contracts, or off-chain systems
@@ -239,6 +254,7 @@ A fixed percentage fee applied at mint time to the on-chain value sent with a
 mint transaction.
 
 The protocol fee:
+
 - is enforced mechanically
 - is visible to users
 - applies only to value the protocol receives
@@ -251,6 +267,7 @@ The protocol fee:
 The set of on-chain contracts and rules that define crontag’s guarantees.
 
 The protocol layer is intentionally minimal and excludes:
+
 - UX
 - marketplaces
 - governance
@@ -274,6 +291,7 @@ A property recorded at mint time indicating whether an `AccessPass` may be
 transferred between owners.
 
 Transferability rules:
+
 - are enforced on-chain
 - cannot be modified after minting
 

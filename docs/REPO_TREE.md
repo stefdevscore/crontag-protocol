@@ -3,6 +3,7 @@
 Generated on: `Mon Jan 12 00:56:58 UTC 2026`
 
 ## Directory Tree (Depth 8)
+
 ```
 .
 |-- docs
@@ -29,6 +30,7 @@ Generated on: `Mon Jan 12 00:56:58 UTC 2026`
 ```
 
 ## Ignored Paths
+
 - `.git`
 - `node_modules`
 - `dist`
@@ -41,4 +43,3 @@ Generated on: `Mon Jan 12 00:56:58 UTC 2026`
 - `.yarn`
 - `.env`
 - `.env.*`
-

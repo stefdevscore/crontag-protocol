@@ -1,11 +1,19 @@
+# Dependencies
 node_modules
+
+# Environment / secrets
 .env
 .env.*
+
+# Hardhat / build artifacts
 artifacts
 cache
 coverage
 typechain
 dist
 
-# Local implementation planning
+# Local, non-normative planning
 EXECUTION-PLAN.md
+
+# Editor configuration
+.vscode/

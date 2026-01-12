@@ -34,6 +34,7 @@ This answers the question:
 Issuance control affects **minting only**.
 
 Once an `AccessPass` is minted:
+
 - issuance rules no longer apply
 - rules cannot be retroactively enforced
 - existing passes remain valid until expiry
@@ -157,7 +158,7 @@ Acceptance and pricing remain **local decisions**.
 
 ---
 
-## What crontag does *not* do
+## What crontag does _not_ do
 
 - It does not decide which issuers are legitimate
 - It does not enforce fairness, honesty, or value

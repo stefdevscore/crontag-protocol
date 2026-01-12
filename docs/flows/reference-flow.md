@@ -16,16 +16,16 @@ This flow is illustrative, not prescriptive.
 
 ## Actors
 
-- **contextOwner**  
+- **contextOwner**
   An address that configures minting rules for a specific context.
 
-- **user**  
+- **user**
   An address that mints and holds an `AccessPass`.
 
-- **access point**  
+- **access point**
   Any application, service, or venue that evaluates access.
 
-- **verifier**  
+- **verifier**
   The reference `AccessVerifier` contract used to evaluate access.
 
 ---
@@ -52,6 +52,7 @@ This flow is illustrative, not prescriptive.
    These constraints may include a mint window, allowlist, or supply cap.
 
 3. A `user` initiates a mint transaction against `AccessPassV1`, specifying:
+
    - `contextId`
    - tier
    - expiration time

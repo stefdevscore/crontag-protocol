@@ -26,7 +26,7 @@ The protocol deliberately separates:
 
 ---
 
-## What it does *not* do
+## What it does _not_ do
 
 crontag does **not**:
 
@@ -58,22 +58,22 @@ Protocol guarantees, constraints, and failure modes are defined in
 
 ### Guarantees (Normative)
 
-- [Trust Model](./docs/guarantees/trust-model.md)  
-- [Protocol Invariants](./docs/guarantees/protocol-invariants.md)  
-- [Acceptable Failures](./docs/guarantees/acceptable-failures.md)  
+- [Trust Model](./docs/guarantees/trust-model.md)
+- [Protocol Invariants](./docs/guarantees/protocol-invariants.md)
+- [Acceptable Failures](./docs/guarantees/acceptable-failures.md)
 
 ### Reference Flows
 
-- [Canonical Reference Flow](./docs/flows/reference-flow.md)  
-- [Full Access Flow with Optional Controller](./docs/flows/full-access-flow-with-controller.md)  
+- [Canonical Reference Flow](./docs/flows/reference-flow.md)
+- [Full Access Flow with Optional Controller](./docs/flows/full-access-flow-with-controller.md)
 
 ### Governance & Control
 
-- [Control & Trust FAQ](./docs/governance/control-and-trust-faq.md)  
+- [Control & Trust FAQ](./docs/governance/control-and-trust-faq.md)
 
 ### Shared References
 
-- [Glossary](./docs/glossary.md)  
+- [Glossary](./docs/glossary.md)
 - [Versioning](./docs/VERSIONING.md)
 
 These documents are **normative** for **crontag protocol v1**.
