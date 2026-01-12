@@ -53,16 +53,18 @@ The protocol makes limited promises — and keeps them.
 
 ## Documentation
 
-Protocol guarantees, constraints, and failure modes are defined in `/docs`:
+Protocol guarantees, constraints, and failure modes are defined in
+[`/docs`](./docs):
 
-- Trust Model  
-- Protocol Invariants  
-- Acceptable Failures  
-- Reference Flows  
-- Control & Trust FAQ  
-- Glossary  
+- [Trust Model](./docs/trust-model.md)  
+- [Protocol Invariants](./docs/protocol-invariants.md)  
+- [Acceptable Failures](./docs/acceptable-failures.md)  
+- [Reference Flow](./docs/reference-flow.md)  
+- [Full Access Flow with Optional Controller](./docs/full-access-flow-with-controller.md)  
+- [Control & Trust FAQ](./docs/control-and-trust-faq.md)  
+- [Glossary](./docs/glossary.md)
 
-These documents are normative for **crontag protocol v1**.
+These documents are **normative** for **crontag protocol v1**.
 
 ---
 
