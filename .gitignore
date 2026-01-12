@@ -6,3 +6,6 @@ cache
 coverage
 typechain
 dist
+
+# Local implementation planning
+EXECUTION-PLAN.md
