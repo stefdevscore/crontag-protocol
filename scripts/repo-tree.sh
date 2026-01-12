@@ -21,6 +21,9 @@ IGNORES=(
   ".yarn"
   ".env"
   ".env.*"
+  "artifacts"
+  "types"
+  "EXECUTION-PLAN.md"
 )
 
 ##############################################

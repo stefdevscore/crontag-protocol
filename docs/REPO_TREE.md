@@ -1,11 +1,15 @@
 # Repository Tree
 
-Generated on: `Mon Jan 12 00:56:58 UTC 2026`
+Generated on: `Mon Jan 12 03:46:09 UTC 2026`
 
 ## Directory Tree (Depth 8)
-
 ```
 .
+|-- contracts
+|   |-- test
+|   |   |-- MockController.sol
+|   |   `-- RejectingController.sol
+|   `-- AccessPassV1.sol
 |-- docs
 |   |-- flows
 |   |   |-- full-access-flow-with-controller.md
@@ -16,21 +20,31 @@ Generated on: `Mon Jan 12 00:56:58 UTC 2026`
 |   |   |-- acceptable-failures.md
 |   |   |-- protocol-invariants.md
 |   |   `-- trust-model.md
+|   |-- DESIGN-ERC721-SURFACE-AUDIT.md
+|   |-- DESIGN-PHILOSOPHY.md
+|   |-- DESIGN-PRIMITIVES.md
 |   |-- README.md
 |   |-- REPO_TREE.md
 |   |-- VERSIONING.md
 |   `-- glossary.md
+|-- ignition
+|   `-- modules
+|       `-- AccessPassV1.ts
 |-- scripts
 |   `-- repo-tree.sh
+|-- test
+|   `-- AccessPassV1.test.ts
 |-- LICENSE.md
 |-- README.md
-`-- package.json
+|-- hardhat.config.ts
+|-- package-lock.json
+|-- package.json
+`-- tsconfig.json
 
-6 directories, 14 files
+11 directories, 25 files
 ```
 
 ## Ignored Paths
-
 - `.git`
 - `node_modules`
 - `dist`
@@ -43,3 +57,7 @@ Generated on: `Mon Jan 12 00:56:58 UTC 2026`
 - `.yarn`
 - `.env`
 - `.env.*`
+- `artifacts`
+- `types`
+- `EXECUTION-PLAN.md`
+
