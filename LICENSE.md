@@ -1,4 +1,7 @@
-# License and Usage Clarification
+# License and Usage Clarification (Non-Normative)
+
+This document does not replace or modify the MIT License.
+It exists solely to clarify interpretation and avoid confusion.
 
 The crontag protocol codebase is licensed under the MIT License.
 See the `LICENSE` file for the full license text.
