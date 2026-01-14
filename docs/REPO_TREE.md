@@ -1,6 +1,6 @@
 # Repository Tree
 
-Generated on: `Wed Jan 14 01:10:51 UTC 2026`
+Generated on: `Wed Jan 14 01:32:55 UTC 2026`
 
 ## Directory Tree (Depth 8)
 ```
@@ -44,11 +44,15 @@ Generated on: `Wed Jan 14 01:10:51 UTC 2026`
 │       │   ├── token-id.test.ts
 │       │   └── transfer-semantics.test.ts
 │       ├── access-verifier
+│       │   ├── allow.test.ts
 │       │   ├── context-match.test.ts
+│       │   ├── determinism.test.ts
 │       │   ├── expiration.test.ts
 │       │   ├── helpers.ts
+│       │   ├── no-side-effects.test.ts
 │       │   ├── nonexistent-token.test.ts
 │       │   ├── ownership.test.ts
+│       │   ├── tier-zero.test.ts
 │       │   └── tier.test.ts
 │       └── context-controller
 │           ├── allowlist.test.ts
@@ -66,7 +70,7 @@ Generated on: `Wed Jan 14 01:10:51 UTC 2026`
 ├── README.md
 └── tsconfig.json
 
-14 directories, 47 files
+14 directories, 51 files
 ```
 
 ## Ignored Paths

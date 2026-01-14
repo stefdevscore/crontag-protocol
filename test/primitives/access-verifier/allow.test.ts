@@ -1,21 +1,18 @@
 import { expect } from "chai";
 import { setupAccessVerifier } from "./helpers.js";
 
-describe("AccessVerifierV1 — Expiration", function () {
-  it("returns false when token is expired", async () => {
+describe("AccessVerifierV1 — Allow Path", function () {
+  it("returns true when all explicit requirements are satisfied", async () => {
     const { verifier, owner, mintPass, ethers } = await setupAccessVerifier();
 
     const contextId = ethers.keccak256(
-      ethers.toUtf8Bytes("expiration-context")
+      ethers.toUtf8Bytes("allow-path-context")
     );
-
-    const block = await ethers.provider.getBlock("latest");
-    const now = BigInt(block!.timestamp);
 
     const tokenId = await mintPass({
       contextId,
-      expiresAt: now - 1n,
-      tier: 1,
+      expiresAt: 0n, // no expiry
+      tier: 2,
       transferable: false,
     });
 
@@ -23,9 +20,9 @@ describe("AccessVerifierV1 — Expiration", function () {
       await owner.getAddress(),
       tokenId,
       contextId,
-      1
+      1 // requiredTier <= token tier
     );
 
-    expect(allowed).to.equal(false);
+    expect(allowed).to.equal(true);
   });
 });
