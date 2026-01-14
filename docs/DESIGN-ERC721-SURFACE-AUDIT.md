@@ -25,6 +25,37 @@ When ambiguity exists, restriction is preferred over permissiveness.
 
 ---
 
+## Canonical Verification Boundary
+
+This document audits the ERC-721 **write and mutation surface** used by
+`AccessPassV1`.
+
+**Interpretation of access facts is explicitly out of scope for ERC-721.**
+
+All access interpretation MUST be performed via `AccessVerifierV1`.
+
+### Implications
+
+- ERC-721 read functions (`ownerOf`, `balanceOf`) provide **raw state only**
+- Ownership alone MUST NOT be treated as proof of access
+- Any logic combining:
+
+  - ownership
+  - expiration
+  - tier
+  - `contextId`
+
+  MUST be delegated to the canonical verifier
+
+This preserves a strict separation between:
+
+- **Fact encoding** (AccessPassV1)
+- **Fact interpretation** (AccessVerifierV1)
+
+and prevents hidden or inconsistent access logic.
+
+---
+
 ## ERC-721 Surface Classification
 
 ### Ownership Inspection
@@ -42,7 +73,11 @@ When ambiguity exists, restriction is preferred over permissiveness.
 - These functions are read-only and do not imply authority.
 - Required for downstream composability.
 
-**Constraints:** None.
+**Constraints:**
+
+- Ownership inspection MUST NOT be treated as sufficient proof of access.
+- Ownership MUST be combined with context, tier, and expiration checks via the
+  canonical verifier.
 
 ---
 
@@ -304,6 +339,13 @@ The following are optional but discouraged unless justified:
 
 ERC-721 provides sufficient structural capability for `AccessPassV1`, but only
 when heavily constrained.
+
+Verification logic is intentionally excluded from the ERC-721 surface.
+`AccessVerifierV1` is the sole canonical mechanism for interpreting access facts
+encoded by `AccessPassV1`.
+
+Any system that bypasses the verifier risks violating protocol invariants even
+if the underlying ERC-721 implementation is compliant.
 
 This audit defines the **allowed subset** of ERC-721 behavior compatible with
 the protocol invariants.

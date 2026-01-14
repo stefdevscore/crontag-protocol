@@ -1,6 +1,6 @@
 # Repository Tree
 
-Generated on: `Wed Jan 14 01:02:28 UTC 2026`
+Generated on: `Wed Jan 14 01:10:51 UTC 2026`
 
 ## Directory Tree (Depth 8)
 ```
@@ -19,6 +19,7 @@ Generated on: `Wed Jan 14 01:02:28 UTC 2026`
 │   │   ├── acceptable-failures.md
 │   │   ├── protocol-invariants.md
 │   │   └── trust-model.md
+│   ├── DESIGN-ACCESS-VERIFIER.md
 │   ├── DESIGN-ERC721-SURFACE-AUDIT.md
 │   ├── DESIGN-PHILOSOPHY.md
 │   ├── DESIGN-PRIMITIVES.md
@@ -65,7 +66,7 @@ Generated on: `Wed Jan 14 01:02:28 UTC 2026`
 ├── README.md
 └── tsconfig.json
 
-14 directories, 46 files
+14 directories, 47 files
 ```
 
 ## Ignored Paths

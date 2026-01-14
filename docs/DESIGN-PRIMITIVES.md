@@ -196,21 +196,98 @@ ERC-721 is the substrate, not the policy.
 
 ---
 
+## AccessVerifierV1 Primitive: Canonical Interpretation
+
+### Purpose of the Primitive
+
+`AccessVerifierV1` exists to **interpret access facts**, not to create or mutate them.
+
+It is the canonical mechanism for answering the question:
+
+> “Does this account currently satisfy the access requirements encoded by this pass?”
+
+---
+
+### Responsibilities
+
+The verifier MUST:
+
+- validate token existence,
+- confirm ownership,
+- match `contextId`,
+- enforce expiration,
+- enforce tier requirements,
+
+and return a deterministic allow / deny result.
+
+---
+
+### Explicit Non-Responsibilities
+
+The verifier MUST NOT:
+
+- infer issuer legitimacy,
+- consult controllers,
+- reference off-chain data,
+- mutate state,
+- enforce policy beyond encoded facts,
+- cache or remember past decisions.
+
+It is a **pure interpreter** of immutable facts.
+
+---
+
+### Why a Separate Verifier Is Required
+
+Embedding access logic inside the token primitive would:
+
+- couple interpretation to storage,
+- encourage hidden authority,
+- risk retroactive reinterpretation,
+- fragment access semantics across implementations.
+
+By isolating interpretation into a dedicated primitive:
+
+- access logic becomes auditable,
+- behavior becomes deterministic,
+- alternative verifiers can exist explicitly,
+- misuse becomes visible rather than implicit.
+
+This preserves the invariant:
+
+> Facts are immutable; meaning is contextual.
+
+---
+
+### Canonical Boundary
+
+The protocol defines a strict boundary:
+
+- `AccessPassV1` — encodes facts
+- `AccessVerifierV1` — interprets facts
+- everything else — composes or applies meaning externally
+
+Any system that bypasses the verifier is explicitly choosing
+**non-canonical interpretation**.
+
+---
+
 ## Conclusion
 
-`AccessPassV1` requires a primitive that encodes:
+The crontag protocol relies on **two complementary primitives**:
 
-- individuality,
-- persistence,
-- ownership,
-- and composability,
+- `AccessPassV1` for immutable fact encoding
+- `AccessVerifierV1` for deterministic access interpretation
 
-while remaining maximally neutral.
+Together, they provide:
 
-ERC-721 satisfies these requirements without overreach.
+- strong guarantees,
+- minimal authority,
+- maximal composability,
+- and explicit misuse visibility.
 
-All remaining design work concerns **restriction and constraint**, not capability.
+All remaining protocol components MUST respect this boundary.
 
-Those restrictions are defined elsewhere and take precedence over convenience.
+Convenience is never justification for collapsing it.
 
 ---
