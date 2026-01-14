@@ -171,7 +171,7 @@ It does **not** decide access and is **not required** for correctness.
 - User interfaces reflect on-chain state accurately
 - Verifier selection reflects the intended access policy
 
-### What users and integrators do *not* need to trust
+### What users and integrators do _not_ need to trust
 
 - Platform custody
 - Platform discretion over access

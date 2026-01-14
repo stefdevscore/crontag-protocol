@@ -92,11 +92,9 @@ When ambiguity exists, restriction is preferred over permissiveness.
 
 **Required Constraints:**
 
-- For non-transferable passes:
-  - approval functions MUST revert
-- For transferable passes:
-  - approvals MAY be allowed
-  - approvals MUST NOT bypass transferability checks
+- Approval functions MUST always revert.
+- No distinction is made between transferable and non-transferable passes.
+- No indirect transfer authority is permitted under any circumstances.
 
 **Invariant Link:**
 
@@ -121,9 +119,8 @@ When ambiguity exists, restriction is preferred over permissiveness.
 
 **Required Constraints:**
 
-- Either:
-  - revert consistently, or
-  - return zero / false values
+- MUST return zero address / false values.
+- MUST NOT imply latent or future transfer authority.
 
 ---
 
@@ -216,6 +213,8 @@ When ambiguity exists, restriction is preferred over permissiveness.
 
 - Hooks are often used to smuggle logic.
 - Hooks can silently introduce authority or side effects.
+- Hooks MUST NOT introduce reentrancy-sensitive state.
+- Reentrancy guards are intentionally omitted; safety relies on invariant ordering.
 
 **Required Constraints:**
 
@@ -250,6 +249,9 @@ When ambiguity exists, restriction is preferred over permissiveness.
 - Controllers may be consulted ONLY during mint.
 - No post-mint authority of any kind.
 - Minted facts must be immutable thereafter.
+- Controllers MUST be declarative predicates (`view` only).
+- Controllers MUST NOT mutate state.
+- Controllers MUST NOT be observable or consulted after mint.
 
 **Invariant Link:**
 
@@ -270,6 +272,7 @@ An ERC-721–based implementation of `AccessPassV1` MUST:
 - Avoid admin, owner, or governance roles
 - Avoid retroactive checks
 - Avoid controller references after mint
+- Disable all approval-related write paths unconditionally
 
 ---
 

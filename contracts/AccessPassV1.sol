@@ -31,13 +31,23 @@ pragma solidity ^0.8.28;
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 
 /* -------------------------------------------------------------------------
- * Controller Interface (issuance-only authority)
+ * Controller Interface (issuance-only, declarative)
  * ---------------------------------------------------------------------- */
 
 interface IContextController {
-    function canMint(address minter, bytes32 contextId)
-        external
-        returns (bool);
+    /**
+     * @notice
+     * Declarative predicate consulted at mint time only.
+     *
+     * Controllers MUST NOT mutate state and MUST NOT assume
+     * any authority beyond returning a boolean.
+     *
+     * Returning false MUST cause mint to revert.
+     */
+    function canMint(
+        address minter,
+        bytes32 contextId
+    ) external view returns (bool);
 }
 
 contract AccessPassV1 is ERC721 {
@@ -55,16 +65,16 @@ contract AccessPassV1 is ERC721 {
 
     struct PassData {
         bytes32 contextId;
-        uint64 expiresAt;
+        uint64 expiresAt; // informational only; not enforced by AccessPassV1
         uint32 tier;
         bool transferable;
-        address controller;
+        address controller; // issuance provenance only; no post-mint authority
     }
 
     // tokenId => immutable pass facts
     mapping(uint256 => PassData) internal _passData;
 
-    // monotonically increasing token id
+    // monotonically increasing token id (starts at 1)
     uint256 internal _nextTokenId;
 
     /* ---------------------------------------------------------------------
@@ -82,9 +92,10 @@ contract AccessPassV1 is ERC721 {
      * Constructor
      * ------------------------------------------------------------------ */
 
-    constructor(string memory name_, string memory symbol_)
-        ERC721(name_, symbol_)
-    {}
+    constructor(
+        string memory name_,
+        string memory symbol_
+    ) ERC721(name_, symbol_) {}
 
     /* ---------------------------------------------------------------------
      * Transfer Guards
@@ -122,11 +133,7 @@ contract AccessPassV1 is ERC721 {
      * Read-Only Accessors
      * ------------------------------------------------------------------ */
 
-    function passData(uint256 tokenId)
-        external
-        view
-        returns (PassData memory)
-    {
+    function passData(uint256 tokenId) external view returns (PassData memory) {
         _requireOwned(tokenId);
         return _passData[tokenId];
     }
@@ -144,10 +151,12 @@ contract AccessPassV1 is ERC721 {
     ) external payable returns (uint256 tokenId) {
         tokenId = ++_nextTokenId;
 
-        // Optional controller gate (issuance-only authority)
+        // Optional controller gate (issuance-only, declarative)
         if (controller != address(0)) {
-            bool allowed =
-                IContextController(controller).canMint(msg.sender, contextId);
+            bool allowed = IContextController(controller).canMint(
+                msg.sender,
+                contextId
+            );
             if (!allowed) revert ControllerRejected();
         }
 
@@ -163,11 +172,6 @@ contract AccessPassV1 is ERC721 {
         // Mint token to caller
         _safeMint(msg.sender, tokenId);
 
-        emit AccessPassMinted(
-            tokenId,
-            msg.sender,
-            contextId,
-            controller
-        );
+        emit AccessPassMinted(tokenId, msg.sender, contextId, controller);
     }
 }

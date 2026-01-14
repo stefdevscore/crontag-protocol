@@ -1,47 +1,55 @@
 # Repository Tree
 
-Generated on: `Mon Jan 12 03:46:09 UTC 2026`
+Generated on: `Wed Jan 14 00:05:52 UTC 2026`
 
 ## Directory Tree (Depth 8)
 ```
 .
-|-- contracts
-|   |-- test
-|   |   |-- MockController.sol
-|   |   `-- RejectingController.sol
-|   `-- AccessPassV1.sol
-|-- docs
-|   |-- flows
-|   |   |-- full-access-flow-with-controller.md
-|   |   `-- reference-flow.md
-|   |-- governance
-|   |   `-- control-and-trust-faq.md
-|   |-- guarantees
-|   |   |-- acceptable-failures.md
-|   |   |-- protocol-invariants.md
-|   |   `-- trust-model.md
-|   |-- DESIGN-ERC721-SURFACE-AUDIT.md
-|   |-- DESIGN-PHILOSOPHY.md
-|   |-- DESIGN-PRIMITIVES.md
-|   |-- README.md
-|   |-- REPO_TREE.md
-|   |-- VERSIONING.md
-|   `-- glossary.md
-|-- ignition
-|   `-- modules
-|       `-- AccessPassV1.ts
-|-- scripts
-|   `-- repo-tree.sh
-|-- test
-|   `-- AccessPassV1.test.ts
-|-- LICENSE.md
-|-- README.md
-|-- hardhat.config.ts
-|-- package-lock.json
-|-- package.json
-`-- tsconfig.json
+├── contracts
+│   ├── test
+│   │   ├── MockController.sol
+│   │   └── RejectingController.sol
+│   └── AccessPassV1.sol
+├── docs
+│   ├── flows
+│   │   ├── full-access-flow-with-controller.md
+│   │   └── reference-flow.md
+│   ├── governance
+│   │   └── control-and-trust-faq.md
+│   ├── guarantees
+│   │   ├── acceptable-failures.md
+│   │   ├── protocol-invariants.md
+│   │   └── trust-model.md
+│   ├── DESIGN-ERC721-SURFACE-AUDIT.md
+│   ├── DESIGN-PHILOSOPHY.md
+│   ├── DESIGN-PRIMITIVES.md
+│   ├── glossary.md
+│   ├── README.md
+│   ├── REPO_TREE.md
+│   └── VERSIONING.md
+├── ignition
+│   └── modules
+│       └── AccessPassV1.ts
+├── scripts
+│   └── repo-tree.sh
+├── test
+│   └── primitives
+│       └── access-pass
+│           ├── approval-semantics.test.ts
+│           ├── controller-scope.test.ts
+│           ├── helpers.ts
+│           ├── immutability.test.ts
+│           ├── misuse.test.ts
+│           └── transfer-semantics.test.ts
+├── eslint.config.js
+├── hardhat.config.ts
+├── LICENSE.md
+├── package-lock.json
+├── package.json
+├── README.md
+└── tsconfig.json
 
-11 directories, 25 files
+13 directories, 31 files
 ```
 
 ## Ignored Paths
