@@ -1,14 +1,11 @@
 # Repository Tree
 
-Generated on: `Wed Jan 14 00:34:53 UTC 2026`
+Generated on: `Wed Jan 14 00:44:53 UTC 2026`
 
 ## Directory Tree (Depth 8)
 ```
 .
 ├── contracts
-│   ├── test
-│   │   ├── MockController.sol
-│   │   └── RejectingController.sol
 │   ├── AccessPassV1.sol
 │   └── ContextControllerV1.sol
 ├── docs
@@ -45,10 +42,13 @@ Generated on: `Wed Jan 14 00:34:53 UTC 2026`
 │       │   ├── token-id.test.ts
 │       │   └── transfer-semantics.test.ts
 │       └── context-controller
+│           ├── allowlist.test.ts
 │           ├── declarative-semantics.test.ts
 │           ├── default-behavior.test.ts
 │           ├── helpers.ts
-│           └── non-retroactivity.test.ts
+│           ├── non-retroactivity.test.ts
+│           ├── supply-boundary.test.ts
+│           └── time-window.test.ts
 ├── eslint.config.js
 ├── hardhat.config.ts
 ├── LICENSE.md
@@ -57,7 +57,7 @@ Generated on: `Wed Jan 14 00:34:53 UTC 2026`
 ├── README.md
 └── tsconfig.json
 
-14 directories, 38 files
+13 directories, 39 files
 ```
 
 ## Ignored Paths
