@@ -3,17 +3,25 @@ import { setupAccessPass } from "./helpers.js";
 
 describe("AccessPassV1 — Controller Scope", function () {
   it("consults controller at mint time only", async () => {
-    const { ethers, accessPass, owner, other, mintPass } =
-      await setupAccessPass();
+    const {
+      ethers,
+      accessPass,
+      owner: _owner,
+      other,
+      mintPass,
+    } = await setupAccessPass();
 
-    // Deploy real ContextControllerV1
+    // Deploy ContextControllerV1 (Model C: no constructor args)
     const Controller = await ethers.getContractFactory("ContextControllerV1");
-    const controller = await Controller.deploy(await owner.getAddress());
+    const controller = await Controller.deploy();
     await controller.waitForDeployment();
 
     const contextId = ethers.keccak256(
       ethers.toUtf8Bytes("controller-scope-context")
     );
+
+    // Explicit context registration (Model C)
+    await controller.registerContext(contextId);
 
     // No rules → mint allowed
     const tokenId = await mintPass({
@@ -24,7 +32,7 @@ describe("AccessPassV1 — Controller Scope", function () {
 
     // Transfer must NOT consult controller again
     await accessPass.transferFrom(
-      await owner.getAddress(),
+      await _owner.getAddress(),
       await other.getAddress(),
       tokenId
     );
@@ -35,25 +43,32 @@ describe("AccessPassV1 — Controller Scope", function () {
   });
 
   it("reverts mint if controller disallows minting", async () => {
-    const { ethers, mintPass, accessPass, owner } = await setupAccessPass();
+    const {
+      ethers,
+      mintPass,
+      accessPass,
+      owner: _owner,
+    } = await setupAccessPass();
 
-    // Deploy real ContextControllerV1
+    // Deploy ContextControllerV1 (Model C: no constructor args)
     const Controller = await ethers.getContractFactory("ContextControllerV1");
-    const controller = await Controller.deploy(await owner.getAddress());
+    const controller = await Controller.deploy();
     await controller.waitForDeployment();
 
     const contextId = ethers.keccak256(
       ethers.toUtf8Bytes("controller-reject-context")
     );
 
-    // Configure controller to disallow minting:
-    // enable allowlist but do not allow the minter
+    // Explicit context registration (Model C)
+    await controller.registerContext(contextId);
+
+    // Configure controller to disallow minting
     await controller.setContextRules(
       contextId,
       0n, // mintStart
       0n, // mintEnd
       0n, // unlimited supply
-      true // useAllowlist = true
+      true // useAllowlist
     );
 
     await expect(

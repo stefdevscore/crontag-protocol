@@ -1,21 +1,29 @@
 import { expect } from "chai";
 import { setupContextController } from "./helpers.js";
+import type { ContextController } from "./helpers.js";
 
 describe("ContextControllerV1 — Allowlist Semantics", function () {
   it("enforces allowlist only when enabled", async () => {
-    const { ethers, controller, user } = await setupContextController();
+    const { ethers, controller, owner, user } = await setupContextController();
 
     const contextId = ethers.keccak256(ethers.toUtf8Bytes("allowlist-context"));
 
+    const ownerController = controller.connect(
+      owner
+    ) as unknown as ContextController;
+
+    // ✅ Explicit context registration
+    await ownerController.registerContext(contextId);
+
     // Allowlist disabled → mint allowed
-    await controller.setContextRules(contextId, 0n, 0n, 0n, false);
+    await ownerController.setContextRules(contextId, 0n, 0n, 0n, false);
 
     expect(
       await controller.canMint(await user.getAddress(), contextId)
     ).to.equal(true);
 
     // Enable allowlist
-    await controller.setContextRules(contextId, 0n, 0n, 0n, true);
+    await ownerController.setContextRules(contextId, 0n, 0n, 0n, true);
 
     // Not allowlisted → rejected
     expect(
@@ -23,7 +31,11 @@ describe("ContextControllerV1 — Allowlist Semantics", function () {
     ).to.equal(false);
 
     // Add to allowlist
-    await controller.setAllowlist(contextId, await user.getAddress(), true);
+    await ownerController.setAllowlist(
+      contextId,
+      await user.getAddress(),
+      true
+    );
 
     expect(
       await controller.canMint(await user.getAddress(), contextId)

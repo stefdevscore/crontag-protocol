@@ -9,12 +9,13 @@ describe("ContextControllerV1 — Declarative Semantics", function () {
       ethers.toUtf8Bytes("declarative-context")
     );
 
-    // If canMint mutated state, Solidity would reject it (view)
-    const allowed = await controller.canMint(
-      await user.getAddress(),
-      contextId
-    );
+    // Context is NOT registered — under Model C this MUST return false
+    const first = await controller.canMint(await user.getAddress(), contextId);
 
-    expect(allowed).to.equal(true);
+    const second = await controller.canMint(await user.getAddress(), contextId);
+
+    // Deterministic
+    expect(first).to.equal(false);
+    expect(second).to.equal(false);
   });
 });

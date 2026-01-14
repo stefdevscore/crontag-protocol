@@ -1,27 +1,44 @@
 import { expect } from "chai";
 import { setupContextController } from "./helpers.js";
+import type { ContextController } from "./helpers.js";
 
 describe("ContextControllerV1 — Supply Boundary", function () {
   it("allows minting up to maxSupply and rejects the next", async () => {
-    const { ethers, controller, user } = await setupContextController();
+    const { ethers, controller, owner, user } = await setupContextController();
+
+    const typedController = controller as unknown as ContextController;
+
+    const controllerAsOwner = typedController.connect(
+      owner
+    ) as unknown as ContextController;
 
     const contextId = ethers.keccak256(
       ethers.toUtf8Bytes("supply-boundary-context")
     );
 
-    // Set maxSupply = 1
-    await controller.setContextRules(contextId, 0n, 0n, 1n, false);
+    // 1. Register context
+    await controllerAsOwner.registerContext(contextId);
 
-    // First mint allowed
+    // 2. Set maxSupply = 1
+    await controllerAsOwner.setContextRules(
+      contextId,
+      0n, // mintStart
+      0n, // mintEnd
+      1n, // maxSupply
+      false
+    );
+
+    // 3. First mint allowed
     expect(
-      await controller.canMint(await user.getAddress(), contextId)
+      await typedController.canMint(await user.getAddress(), contextId)
     ).to.equal(true);
 
-    await controller.recordMint(contextId);
+    // 4. Record first mint
+    await controllerAsOwner.recordMint(contextId);
 
-    // Second mint rejected
+    // 5. Second mint rejected
     expect(
-      await controller.canMint(await user.getAddress(), contextId)
+      await typedController.canMint(await user.getAddress(), contextId)
     ).to.equal(false);
   });
 });

@@ -10,23 +10,26 @@ import type { BaseContract, Signer } from "ethers";
  * - Types mirror Solidity exactly (uint64 → bigint).
  */
 export interface ContextController extends BaseContract {
-  canMint(_minter: string, _contextId: string): Promise<boolean>;
+  // NEW — Model C requires explicit registration
+  registerContext(contextId: string): Promise<void>;
+
+  canMint(minter: string, contextId: string): Promise<boolean>;
 
   setContextRules(
-    _contextId: string,
-    _mintStart: bigint,
-    _mintEnd: bigint,
-    _maxSupply: bigint,
-    _useAllowlist: boolean
+    contextId: string,
+    mintStart: bigint,
+    mintEnd: bigint,
+    maxSupply: bigint,
+    useAllowlist: boolean
   ): Promise<void>;
 
   setAllowlist(
-    _contextId: string,
-    _minter: string,
-    _allowed: boolean
+    contextId: string,
+    minter: string,
+    allowed: boolean
   ): Promise<void>;
 
-  recordMint(_contextId: string): Promise<void>;
+  recordMint(contextId: string): Promise<void>;
 }
 
 export async function setupContextController() {
@@ -38,9 +41,8 @@ export async function setupContextController() {
 
   const Controller = await ethers.getContractFactory("ContextControllerV1");
 
-  const controller = (await Controller.deploy(
-    await owner.getAddress()
-  )) as unknown as ContextController;
+  const controller =
+    (await Controller.deploy()) as unknown as ContextController;
 
   await controller.waitForDeployment();
 

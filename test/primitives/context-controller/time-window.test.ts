@@ -1,9 +1,16 @@
 import { expect } from "chai";
 import { setupContextController } from "./helpers.js";
+import type { ContextController } from "./helpers.js";
 
 describe("ContextControllerV1 — Time Window", function () {
   it("enforces mintStart and mintEnd boundaries precisely", async () => {
-    const { ethers, controller, user } = await setupContextController();
+    const { ethers, controller, owner, user } = await setupContextController();
+
+    const typedController = controller as unknown as ContextController;
+
+    const controllerAsOwner = typedController.connect(
+      owner
+    ) as unknown as ContextController;
 
     const now = BigInt((await ethers.provider.getBlock("latest"))!.timestamp);
 
@@ -14,31 +21,41 @@ describe("ContextControllerV1 — Time Window", function () {
       ethers.toUtf8Bytes("time-window-context")
     );
 
-    await controller.setContextRules(contextId, mintStart, mintEnd, 0n, false);
+    // 1. Register context
+    await controllerAsOwner.registerContext(contextId);
 
-    // Before window
+    // 2. Configure window
+    await controllerAsOwner.setContextRules(
+      contextId,
+      mintStart,
+      mintEnd,
+      0n, // unlimited supply
+      false // no allowlist
+    );
+
+    // 3. Before window → rejected
     expect(
-      await controller.canMint(await user.getAddress(), contextId)
+      await typedController.canMint(await user.getAddress(), contextId)
     ).to.equal(false);
 
-    // Jump to start
+    // 4. Jump to mintStart
     await ethers.provider.send("evm_setNextBlockTimestamp", [
       Number(mintStart),
     ]);
     await ethers.provider.send("evm_mine", []);
 
     expect(
-      await controller.canMint(await user.getAddress(), contextId)
+      await typedController.canMint(await user.getAddress(), contextId)
     ).to.equal(true);
 
-    // Jump past end
+    // 5. Jump past mintEnd
     await ethers.provider.send("evm_setNextBlockTimestamp", [
       Number(mintEnd + 1n),
     ]);
     await ethers.provider.send("evm_mine", []);
 
     expect(
-      await controller.canMint(await user.getAddress(), contextId)
+      await typedController.canMint(await user.getAddress(), contextId)
     ).to.equal(false);
   });
 });
