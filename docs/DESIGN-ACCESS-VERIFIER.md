@@ -62,6 +62,7 @@ Access is granted **if and only if** all of the following are true:
    - `block.timestamp <= pass.expiresAt`
 
 5. **Tier Requirement**
+
    - `pass.tier >= requiredTier`
 
 If **any** check fails, verification returns `false`.
