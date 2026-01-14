@@ -23,13 +23,19 @@ export default [
       prettier: prettierPlugin,
     },
     rules: {
+      // Disable core rule (TS-aware replacement below)
+      "no-unused-vars": "off",
+
       // Hardhat / ethers reality
       "@typescript-eslint/no-explicit-any": "off",
 
       // Clean unused vars, allow _-prefixed
       "@typescript-eslint/no-unused-vars": [
         "error",
-        { argsIgnorePattern: "^_" },
+        {
+          argsIgnorePattern: "^_",
+          varsIgnorePattern: "^_",
+        },
       ],
 
       // Prettier is the formatting authority

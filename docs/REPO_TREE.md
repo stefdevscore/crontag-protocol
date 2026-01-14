@@ -1,6 +1,6 @@
 # Repository Tree
 
-Generated on: `Wed Jan 14 00:05:52 UTC 2026`
+Generated on: `Wed Jan 14 00:34:53 UTC 2026`
 
 ## Directory Tree (Depth 8)
 ```
@@ -9,7 +9,8 @@ Generated on: `Wed Jan 14 00:05:52 UTC 2026`
 │   ├── test
 │   │   ├── MockController.sol
 │   │   └── RejectingController.sol
-│   └── AccessPassV1.sol
+│   ├── AccessPassV1.sol
+│   └── ContextControllerV1.sol
 ├── docs
 │   ├── flows
 │   │   ├── full-access-flow-with-controller.md
@@ -34,13 +35,20 @@ Generated on: `Wed Jan 14 00:05:52 UTC 2026`
 │   └── repo-tree.sh
 ├── test
 │   └── primitives
-│       └── access-pass
-│           ├── approval-semantics.test.ts
-│           ├── controller-scope.test.ts
+│       ├── access-pass
+│       │   ├── approval-semantics.test.ts
+│       │   ├── controller-scope.test.ts
+│       │   ├── helpers.ts
+│       │   ├── immutability.test.ts
+│       │   ├── misuse.test.ts
+│       │   ├── nonexistent-token.test.ts
+│       │   ├── token-id.test.ts
+│       │   └── transfer-semantics.test.ts
+│       └── context-controller
+│           ├── declarative-semantics.test.ts
+│           ├── default-behavior.test.ts
 │           ├── helpers.ts
-│           ├── immutability.test.ts
-│           ├── misuse.test.ts
-│           └── transfer-semantics.test.ts
+│           └── non-retroactivity.test.ts
 ├── eslint.config.js
 ├── hardhat.config.ts
 ├── LICENSE.md
@@ -49,7 +57,7 @@ Generated on: `Wed Jan 14 00:05:52 UTC 2026`
 ├── README.md
 └── tsconfig.json
 
-13 directories, 31 files
+14 directories, 38 files
 ```
 
 ## Ignored Paths
