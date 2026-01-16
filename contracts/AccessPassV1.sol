@@ -35,143 +35,188 @@ import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
  * ---------------------------------------------------------------------- */
 
 interface IContextController {
-    /**
-     * @notice
-     * Declarative predicate consulted at mint time only.
-     *
-     * Controllers MUST NOT mutate state and MUST NOT assume
-     * any authority beyond returning a boolean.
-     *
-     * Returning false MUST cause mint to revert.
-     */
-    function canMint(
-        address minter,
-        bytes32 contextId
-    ) external view returns (bool);
+  /**
+   * @notice
+   * Declarative predicate consulted at mint time only.
+   *
+   * Controllers MUST NOT mutate state and MUST NOT assume
+   * any authority beyond returning a boolean.
+   *
+   * Returning false MUST cause mint to revert.
+   */
+  function canMint(
+    address minter,
+    bytes32 contextId
+  ) external view returns (bool);
 }
 
 contract AccessPassV1 is ERC721 {
-    /* ---------------------------------------------------------------------
-     * Errors (explicit > strings)
-     * ------------------------------------------------------------------ */
+  /* ---------------------------------------------------------------------
+   * Errors (explicit > strings)
+   * ------------------------------------------------------------------ */
 
-    error NonTransferable();
-    error ApprovalsDisabled();
-    error ControllerRejected();
+  error NonTransferable();
+  error ApprovalsDisabled();
+  error ControllerRejected();
 
-    /* ---------------------------------------------------------------------
-     * Immutable Pass Facts (per token)
-     * ------------------------------------------------------------------ */
+  /* ---------------------------------------------------------------------
+   * Immutable Pass Facts (per token)
+   * ------------------------------------------------------------------ */
 
-    struct PassData {
-        bytes32 contextId;
-        uint64 expiresAt; // informational only; not enforced by AccessPassV1
-        uint32 tier;
-        bool transferable;
-        address controller; // issuance provenance only; no post-mint authority
+  struct PassData {
+    bytes32 contextId;
+    uint64 expiresAt; // informational only; not enforced by AccessPassV1
+    uint32 tier;
+    bool transferable;
+    address controller; // issuance provenance only; no post-mint authority
+  }
+
+  // tokenId => immutable pass facts
+  mapping(uint256 => PassData) internal _passData;
+
+  // monotonically increasing token id (starts at 1)
+  uint256 internal _nextTokenId;
+
+  /* ---------------------------------------------------------------------
+   * Events
+   * ------------------------------------------------------------------ */
+
+  event AccessPassMinted(
+    uint256 indexed tokenId,
+    address indexed owner,
+    bytes32 indexed contextId,
+    address controller
+  );
+
+  /* ---------------------------------------------------------------------
+   * Constructor
+   * ------------------------------------------------------------------ */
+
+  constructor(
+    string memory name_,
+    string memory symbol_
+  ) ERC721(name_, symbol_) {}
+
+  /* ---------------------------------------------------------------------
+   * Transfer Guards
+   * ------------------------------------------------------------------ */
+
+  function _update(
+    address to,
+    uint256 tokenId,
+    address auth
+  ) internal override returns (address) {
+    // If the token already exists (i.e. this is a transfer, not a mint),
+    // enforce non-transferability.
+    if (_ownerOf(tokenId) != address(0)) {
+      if (!_passData[tokenId].transferable) {
+        revert NonTransferable();
+      }
     }
 
-    // tokenId => immutable pass facts
-    mapping(uint256 => PassData) internal _passData;
+    return super._update(to, tokenId, auth);
+  }
 
-    // monotonically increasing token id (starts at 1)
-    uint256 internal _nextTokenId;
+  /* ---------------------------------------------------------------------
+   * Approval Guards
+   * ------------------------------------------------------------------ */
 
-    /* ---------------------------------------------------------------------
-     * Events
-     * ------------------------------------------------------------------ */
+  function approve(address, uint256) public pure override {
+    revert ApprovalsDisabled();
+  }
 
-    event AccessPassMinted(
-        uint256 indexed tokenId,
-        address indexed owner,
-        bytes32 indexed contextId,
-        address controller
-    );
+  function setApprovalForAll(address, bool) public pure override {
+    revert ApprovalsDisabled();
+  }
 
-    /* ---------------------------------------------------------------------
-     * Constructor
-     * ------------------------------------------------------------------ */
+  /* ---------------------------------------------------------------------
+   * Read-Only Accessors
+   * ------------------------------------------------------------------ */
 
-    constructor(
-        string memory name_,
-        string memory symbol_
-    ) ERC721(name_, symbol_) {}
+  function passData(uint256 tokenId) external view returns (PassData memory) {
+    _requireOwned(tokenId);
+    return _passData[tokenId];
+  }
 
-    /* ---------------------------------------------------------------------
-     * Transfer Guards
-     * ------------------------------------------------------------------ */
+  /* ---------------------------------------------------------------------
+   * Minting (ONLY authority-bearing functions)
+   * ------------------------------------------------------------------ */
 
-    function _update(
-        address to,
-        uint256 tokenId,
-        address auth
-    ) internal override returns (address) {
-        // If the token already exists (i.e. this is a transfer, not a mint),
-        // enforce non-transferability.
-        if (_ownerOf(tokenId) != address(0)) {
-            if (!_passData[tokenId].transferable) {
-                revert NonTransferable();
-            }
-        }
+  /**
+   * @notice
+   * Direct mint — mints to msg.sender.
+   *
+   * This function exists for users who mint directly
+   * without a router.
+   */
+  function mint(
+    bytes32 contextId,
+    uint64 expiresAt,
+    uint32 tier,
+    bool transferable,
+    address controller
+  ) external payable returns (uint256 tokenId) {
+    tokenId = ++_nextTokenId;
 
-        return super._update(to, tokenId, auth);
+    if (controller != address(0)) {
+      bool allowed = IContextController(controller).canMint(
+        msg.sender,
+        contextId
+      );
+      if (!allowed) revert ControllerRejected();
     }
 
-    /* ---------------------------------------------------------------------
-     * Approval Guards
-     * ------------------------------------------------------------------ */
+    _passData[tokenId] = PassData({
+      contextId: contextId,
+      expiresAt: expiresAt,
+      tier: tier,
+      transferable: transferable,
+      controller: controller
+    });
 
-    function approve(address, uint256) public pure override {
-        revert ApprovalsDisabled();
+    _safeMint(msg.sender, tokenId);
+
+    emit AccessPassMinted(tokenId, msg.sender, contextId, controller);
+  }
+
+  /**
+   * @notice
+   * NEW — Router-safe mint.
+   *
+   * Allows trusted orchestration layers (e.g. IssuanceRouterV1)
+   * to mint directly to the end user without custody.
+   *
+   * This preserves:
+   * - immutability
+   * - controller purity
+   * - non-retroactivity
+   * - explicit recipients
+   */
+  function mintTo(
+    address to,
+    bytes32 contextId,
+    uint64 expiresAt,
+    uint32 tier,
+    bool transferable,
+    address controller
+  ) external payable returns (uint256 tokenId) {
+    tokenId = ++_nextTokenId;
+
+    if (controller != address(0)) {
+      bool allowed = IContextController(controller).canMint(to, contextId);
+      if (!allowed) revert ControllerRejected();
     }
 
-    function setApprovalForAll(address, bool) public pure override {
-        revert ApprovalsDisabled();
-    }
+    _passData[tokenId] = PassData({
+      contextId: contextId,
+      expiresAt: expiresAt,
+      tier: tier,
+      transferable: transferable,
+      controller: controller
+    });
 
-    /* ---------------------------------------------------------------------
-     * Read-Only Accessors
-     * ------------------------------------------------------------------ */
+    _safeMint(to, tokenId);
 
-    function passData(uint256 tokenId) external view returns (PassData memory) {
-        _requireOwned(tokenId);
-        return _passData[tokenId];
-    }
-
-    /* ---------------------------------------------------------------------
-     * Minting (ONLY authority-bearing function)
-     * ------------------------------------------------------------------ */
-
-    function mint(
-        bytes32 contextId,
-        uint64 expiresAt,
-        uint32 tier,
-        bool transferable,
-        address controller
-    ) external payable returns (uint256 tokenId) {
-        tokenId = ++_nextTokenId;
-
-        // Optional controller gate (issuance-only, declarative)
-        if (controller != address(0)) {
-            bool allowed = IContextController(controller).canMint(
-                msg.sender,
-                contextId
-            );
-            if (!allowed) revert ControllerRejected();
-        }
-
-        // Write immutable pass facts
-        _passData[tokenId] = PassData({
-            contextId: contextId,
-            expiresAt: expiresAt,
-            tier: tier,
-            transferable: transferable,
-            controller: controller
-        });
-
-        // Mint token to caller
-        _safeMint(msg.sender, tokenId);
-
-        emit AccessPassMinted(tokenId, msg.sender, contextId, controller);
-    }
+    emit AccessPassMinted(tokenId, to, contextId, controller);
+  }
 }
