@@ -11,7 +11,7 @@ import type { BaseContract, Signer } from "ethers";
  */
 export interface ContextController extends BaseContract {
   // NEW — Model C requires explicit registration
-  registerContext(contextId: string): Promise<void>;
+  registerContext(contextId: string, owner: string): Promise<void>;
 
   canMint(minter: string, contextId: string): Promise<boolean>;
 

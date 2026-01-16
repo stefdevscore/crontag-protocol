@@ -13,7 +13,7 @@ describe("ContextControllerV1 — Allowlist Semantics", function () {
     ) as unknown as ContextController;
 
     // ✅ Explicit context registration
-    await ownerController.registerContext(contextId);
+    await ownerController.registerContext(contextId, await owner.getAddress());
 
     // Allowlist disabled → mint allowed
     await ownerController.setContextRules(contextId, 0n, 0n, 0n, false);

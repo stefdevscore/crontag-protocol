@@ -17,7 +17,10 @@ describe("ContextControllerV1 — Supply Boundary", function () {
     );
 
     // 1. Register context
-    await controllerAsOwner.registerContext(contextId);
+    await controllerAsOwner.registerContext(
+      contextId,
+      await owner.getAddress()
+    );
 
     // 2. Set maxSupply = 1
     await controllerAsOwner.setContextRules(

@@ -21,7 +21,7 @@ describe("AccessPassV1 — Controller Scope", function () {
     );
 
     // Explicit context registration (Model C)
-    await controller.registerContext(contextId);
+    await controller.registerContext(contextId, await _owner.getAddress());
 
     // No rules → mint allowed
     const tokenId = await mintPass({
@@ -60,7 +60,7 @@ describe("AccessPassV1 — Controller Scope", function () {
     );
 
     // Explicit context registration (Model C)
-    await controller.registerContext(contextId);
+    await controller.registerContext(contextId, await _owner.getAddress());
 
     // Configure controller to disallow minting
     await controller.setContextRules(

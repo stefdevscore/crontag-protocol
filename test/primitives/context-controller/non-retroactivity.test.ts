@@ -17,7 +17,10 @@ describe("ContextControllerV1 — Non-Retroactivity", function () {
     );
 
     // 1. Explicit context registration
-    await controllerAsOwner.registerContext(contextId);
+    await controllerAsOwner.registerContext(
+      contextId,
+      await owner.getAddress()
+    );
 
     // 2. Initially unrestricted minting
     expect(

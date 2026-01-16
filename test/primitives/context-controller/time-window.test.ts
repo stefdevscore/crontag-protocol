@@ -22,7 +22,10 @@ describe("ContextControllerV1 — Time Window", function () {
     );
 
     // 1. Register context
-    await controllerAsOwner.registerContext(contextId);
+    await controllerAsOwner.registerContext(
+      contextId,
+      await owner.getAddress()
+    );
 
     // 2. Configure window
     await controllerAsOwner.setContextRules(

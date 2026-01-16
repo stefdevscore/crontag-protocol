@@ -15,7 +15,10 @@ describe("ContextControllerV1 — Default Behavior", function () {
     const contextId = ethers.keccak256(ethers.toUtf8Bytes("default-context"));
 
     // ✅ Explicit registration
-    await controllerAsOwner.registerContext(contextId);
+    await controllerAsOwner.registerContext(
+      contextId,
+      await owner.getAddress()
+    );
 
     const allowed = await typedController.canMint(
       await user.getAddress(),
